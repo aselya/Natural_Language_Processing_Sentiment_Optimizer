@@ -11,7 +11,7 @@ import sys
 install_virtual_env = 'pip install virtualenv'
 setup_virtual_env = 'virtualenv shakespheare'
 start_virtual_env = 'source shakespheare/bin/activate'
-export_google_credentials = 'export GOOGLE_APPLICATION_CREDENTIALS="/Users/aarondavidselya@gmail/Desktop/shakespheare/shakespeareanInsultGenerator-b00ff00d9faa.json"'
+export_google_credentials = 'export GOOGLE_APPLICATION_CREDENTIALS="../shakespheare/shakespeareanInsultGenerator-b00ff00d9faa.json"'
 
 #calls to establish virtualenv
 os.system(install_virtual_env)
@@ -28,7 +28,7 @@ install_package('pandas')
 
 #sets a enviornmental variable needed for google NLP
 def export_cred():
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/Users/aarondavidselya@gmail/Desktop/shakespheare/shakespeareanInsultGenerator-b00ff00d9faa.json"
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS']="../shakespheare/shakespeareanInsultGenerator-b00ff00d9faa.json"
 
 export_cred()
 
