@@ -1,1 +1,30 @@
-Artificially intellegent shakepearean insult generator. Still a work in progress. Uses NLP sentiment analysis and genetic algorithim to build insults.
+Got into a shakesperean name calling contest with a few friends and I figured this would be
+a fun way of using my knowledge of NLP to amuse my friends. Using the set list of base set terms 
+of shakespearean terms, this program calls the google natural language api and returns the 
+sentiment and magnitude scores of the strings passed to the API. It then uses an implementation
+of the genetic algorithm to find the most insulting terms.
+
+If you want to try out the program for yourself, running the build_env.py file will create
+a virtual enviornment, install the needed packages and run the main algorithm. Prior to 
+doing so you will need to create an account on google cloud to obtain the needed certifications
+as well as update the path strings in the file.
+
+Sample Output:
+
+############FINAL GENERATION: 11
+Thou art a tottering hell-hated minnow     |fitness score:-22.0
+Thou art a tottering doghearted giglet     |fitness score:-22.0
+Thou art a tottering hell-hated giglet     |fitness score:-22.0
+Thou art a tottering doghearted codpiece     |fitness score:-22.0
+Thou art a tottering doghearted giglet     |fitness score:0.0
+Thou art a tottering hell-hated giglet     |fitness score:0.0
+Thou art a wayward rump-fed giglet     |fitness score:0.0
+Thou art a tottering pottle-deep giglet     |fitness score:8.0
+Thou art a tottering dread-bolted pignut     |fitness score:8.0
+Thou art a tottering hell-hated minnow     |fitness score:8.0
+Thou art a tottering doghearted giglet     |fitness score:10.0
+Thou art a gleeking doghearted harpy     |fitness score:18.0
+Thou art a tottering hell-hated minnow     |fitness score:18.0
+Thou art a tottering hell-hated foot-licker     |fitness score:32.0
+Thou art a tottering doghearted giglet     |fitness score:50.0
+
