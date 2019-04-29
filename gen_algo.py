@@ -1,13 +1,12 @@
+#needed imports
 import data_setup as data_S
 import hashMap
 import nlp
 import random
 import numpy as np
 
-
-
-
-GENERATIONS = 2
+#class variables
+GENERATIONS = 20
 POPULATION_OF_PHRASES = []
 IDEAL_POPULATION_SIZE = 20
 IDEAL_PHRASE_LENGTH = 3
@@ -16,19 +15,19 @@ NUMBER_OF_PARENTS = 4
 HASHMAP = hashMap.HashMap()
 
 class Chromosomes:
-
-
+    #creates and sets the insult string value for the chromosome
+    #uses the correct a or an article
     def set_insult_string(chrom):
         while chrom.genes_that_contain_phrases[0][:1] not in ['a','e','i','o', 'u']:
             insult_string =("Thou art a " + ' '.join(chrom.genes_that_contain_phrases) + "     |fitness score:" + str(chrom.fittness_score))
-            #print(insult_string)
             chrom.insult_string = insult_string
             return  insult_string
         else:
             insult_string = ("Thou art an " + ' '.join(chrom.genes_that_contain_phrases)+ "     |fitness score:" + str(chrom.fittness_score))
-            #print(insult_string)
             chrom.insult_string = insult_string
             return  insult_string
+    #sets the fittness score
+    #first checks hashmap then calls google api
     def set_fittness_score(chrom):
         #random_score = random.randint(-10, 10)
         #chrom.fittness_score = random_score
@@ -38,33 +37,28 @@ class Chromosomes:
         else:
             chrom.fittness_score = HASHMAP.get(chrom.insult_string())
             print("hashMap used")
-
-
-
         return chrom
 
+    #sets initial structure for chromosome
     def __init__(self, length):
         self.genes_that_contain_phrases = []
         self.fittness_score = 0
         self.current_length = 0
         self.insult_string = ""
-
+        #fills the chromsome with genes
         while len(self.genes_that_contain_phrases) < length:
             new_gene = data_S.get_random_term(self.current_length)
             self.current_length += 1
             self.genes_that_contain_phrases.append(new_gene)
-
-        print(self.genes_that_contain_phrases)
         self.set_insult_string()
         self.set_fittness_score()
-        print("fittness score: "+ str(self.fittness_score))
-
-
  #end class chromosomes
+
 
 def sort_pop_by_fittness_score (pop):
     return pop.sort(key=lambda x: x.fittness_score)
 
+#returns a population only containing parents
 def isolate_parents (pop, number_of_parents):
     sort_pop_by_fittness_score(pop)
     if number_of_parents < len(pop):
@@ -77,14 +71,13 @@ def isolate_parents (pop, number_of_parents):
         print("Need larger population or less parents")
 
 
-
 def print_population(pop):
     for chrom in pop:
         print(chrom.set_insult_string())
 
 
 
-
+#makes a new population of the correct size
 def build_initial_population():
     while len(POPULATION_OF_PHRASES) < IDEAL_POPULATION_SIZE:
         new_chrom = Chromosomes( IDEAL_PHRASE_LENGTH)
@@ -93,10 +86,7 @@ def build_initial_population():
     print_population(POPULATION_OF_PHRASES)
     return POPULATION_OF_PHRASES
 
-
-
-#chrom = Chromosomes(IDEAL_PHRASE_LENGTH)
-
+#checks for duplicate terms in any chromosome
 def check_for_duplicates(chrom, new_phrase):
     if len(chrom.genes_that_contain_phrases)==0:
         return new_phrase
@@ -110,7 +100,7 @@ def check_for_duplicates(chrom, new_phrase):
     return new_phrase
 
 
-
+#determines if a gene is to be mutated
 def mutation(chrom):
     count = 0
     for genes in chrom.genes_that_contain_phrases:
@@ -123,12 +113,7 @@ def mutation(chrom):
         count += 1
 
 
-
-
-#mutation(chrom)
-
-
-
+#uses a selection of 2 parent chromosomes to initiate crossbreeding
 def crossbreed (parent1, parent2):
     length = len(parent1.genes_that_contain_phrases)
     child_chrom = Chromosomes(length)
@@ -142,7 +127,8 @@ def crossbreed (parent1, parent2):
 
 
 
-
+#selects a random parent from the parent population
+#initiates crossbreeding
 def select_random_parents_and_crossbreed(pop, number_of_parents):
 
     sort_pop_by_fittness_score (pop)
@@ -158,7 +144,7 @@ def select_random_parents_and_crossbreed(pop, number_of_parents):
 
         pop.append(crossbreed (parent1, parent2))
 
-
+#main GA loop
 pop = build_initial_population()
 count = 0
 best_from_each_generation=[]
@@ -166,14 +152,14 @@ while count < GENERATIONS:
     pop = isolate_parents (pop, NUMBER_OF_PARENTS)
     best_from_each_generation.append(pop[0])
     select_random_parents_and_crossbreed(pop, NUMBER_OF_PARENTS)
-    print("############GENERATION: " + str(count+1))
+    print("############ GENERATION: " + str(count+1))
     print_population(pop)
 
     count += 1
 
-print("############FINAL GENERATION: " + str(count+1))
+print("############ FINAL GENERATION: " + str(count+1))
 sort_pop_by_fittness_score(pop)
 print_population(pop)
 
-print("############BEST FROM EACH GENERATION: " + str(count+1))
+print("############ BEST FROM EACH GENERATION: " + str(count+1))
 print_population(best_from_each_generation)
